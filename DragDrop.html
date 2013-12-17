@@ -48,7 +48,7 @@
     fill: 'green'
   });
   
-  var positions = [rect1,rect2]; 
+  var positions = [rect1, rect2]; 
 
   canvas.add(rect1, rect2, rect3, rect4);
   canvas.on({
@@ -66,9 +66,13 @@
   
   function goToPosition(options) {
     for (pos in positions){
-		if (options.target.intersectsWithObject(positions[pos]))
-			alert("Intersects");
-	};
+      var obj = positions[pos];
+		  // if it intersects a position, automaticaly fill the position with the objects
+      if (options.target.intersectsWithObject(obj)){
+        options.target.setLeft(obj.getLeft());
+        options.target.setTop(obj.getTop());
+      };
+	 };
   }
 })();
 
