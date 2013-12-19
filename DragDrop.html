@@ -48,12 +48,16 @@
     fill: 'green'
   });
   
-  var positions = [rect1, rect2]; 
+  // var positions = [rect1, rect2]; 
+  // Positions MAP => key = [Object, ocuppied?(true/false)]
+  var positions = {};
+  positions[1] = [rect1, false];
+  positions[2] = [rect2, false];
 
   canvas.add(rect1, rect2, rect3, rect4);
   canvas.on({
     'object:moving': onChange,
-	'object:modified': goToPosition,
+	  'object:modified': goToPosition,
   });
 
   function onChange(options) {
@@ -65,12 +69,25 @@
   }
   
   function goToPosition(options) {
-    for (pos in positions){
-      var obj = positions[pos];
-		  // if it intersects a position, automaticaly fill the position with the objects
-      if (options.target.intersectsWithObject(obj)){
-        options.target.setLeft(obj.getLeft());
-        options.target.setTop(obj.getTop());
+    for (var pos in positions){
+      // get the position object
+      var position = positions[pos][0];
+      var ocuppied = positions[pos][1];
+      // if the object was previously occupying a position, free 
+      // that position
+      if (ocuppied) positions[pos][1] = false;
+		  // check if the object intersects a position
+      if (options.target.intersectsWithObject(position)) {
+        // check if the position is already filled with another object
+        if (!(ocuppied)) {
+            // if it's not filled with another object,
+            // automaticaly fill the position with the objects
+            options.target.setLeft(position.getLeft());
+            options.target.setTop(position.getTop());
+            positions[pos][1] = true;
+        } else {
+          alert("There's another object in this position! :/");
+        };
       };
 	 };
   }
