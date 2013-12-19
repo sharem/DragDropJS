@@ -1,0 +1,20 @@
+<!DOCTYPE html>    
+<head>
+    <meta charset="utf-8">
+    <title>Simple drag'n'drop exercise example</title>
+	
+	<!-- Get version Fabric.js from CDN -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.0/fabric.min.js"></script>
+
+	<!-- Get the highest 1.X version of jQuery from CDN. Required for ready() function. -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> 
+</head>
+<body>
+		<!-- A canvas tag is required or Fabric.js doesn't know where to draw. -->
+		<canvas id="c" class="upper-canvas " style="border: 1px solid rgb(170, 170, 170); position: absolute; width: 500px; height: 500px; left: 0px; top: 0px; -moz-user-select: none; cursor: default;" width="800" height="600"></canvas>
+</body>
+
+<!-- Place script tags at the bottom of the page. That way progressive page rendering and downloads are not blocked. -->
+<script src="dragdrop.js"></script>
+
+</html>
