@@ -14,6 +14,7 @@ var rect2 = new fabric.Rect({
 selectable: false
 });
 
+/*
 var rect3 = new fabric.Rect({
   width: 100, height: 100, left: 100, top: 100,
   fill: 'blue'
@@ -23,6 +24,23 @@ var rect4 = new fabric.Rect({
   width: 100, height: 100, left: 175, top: 250,
   fill: 'green'
 });
+*/
+for (var i = 0, len = 2; i < len; i++) { 
+  fabric.Image.fromURL('./assets/jake.png', function(img) {
+    img.set({
+      left: fabric.util.getRandomInt(0, 300),
+      top: fabric.util.getRandomInt(0, 300),
+      width: 100,
+      height: 150,
+    });
+
+    // img.perPixelTargetFind = true;
+    // img.targetFindTolerance = 4;
+    img.hasControls = img.hasBorders = false;
+
+    canvas.add(img);
+  });
+}
 
 // var positions = [rect1, rect2]; 
 // Positions MAP => key = [Object, ocuppied?(true/false)]
