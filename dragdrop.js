@@ -34,7 +34,7 @@ for (var i = 0, len = 2; i < len; i++) {
       height: 150,
     });
 
-    // img.perPixelTargetFind = true;
+    img.perPixelTargetFind = true;
     // img.targetFindTolerance = 4;
     img.hasControls = img.hasBorders = false;
 
@@ -76,11 +76,11 @@ function goToPosition(options) {
       if (!(ocuppied)) {
           // if it's not filled with another object,
           // automaticaly fill the position with the objects
-          options.target.setLeft(position.getLeft());
-          options.target.setTop(position.getTop());
           positions[pos][1] = true;
           // set opacity to 1
           positions[pos][0].setOpacity(1);
+          options.target.setLeft(position.getLeft());
+          options.target.setTop(position.getTop());
       } else {
         alert("There's another object in this position! :/");
       }
