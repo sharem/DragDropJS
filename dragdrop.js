@@ -25,7 +25,7 @@ var rect4 = new fabric.Rect({
   fill: 'green'
 });
 */
-for (var i = 0, len = 2; i < len; i++) { 
+for (var i = 0, len = 2; i < len; i++) {
   fabric.Image.fromURL('./assets/jake.png', function(img) {
     img.set({
       left: fabric.util.getRandomInt(0, 300),
@@ -35,7 +35,7 @@ for (var i = 0, len = 2; i < len; i++) {
     });
 
     img.perPixelTargetFind = true;
-    // img.targetFindTolerance = 4;
+    img.targetFindTolerance = 4;
     img.hasControls = img.hasBorders = false;
 
     canvas.add(img);
