@@ -1,20 +1,49 @@
 
 var canvas = new fabric.Canvas('c');
+canvas.setBackgroundImage('assets/tree.png');
+canvas.setWidth(857);
+canvas.setHeight(462);
 fabric.Object.prototype.transparentCorners = false;
 
+/*
 var rect1 = new fabric.Rect({
-  width: 100, height: 150, left: 100, top: 350,
-  fill: 'red',
+  width: 118, height: 60, left: 38, top: 244,
+  fill: 'grey',
 selectable: false
 });
+*/
 
-var rect2 = new fabric.Rect({
-  width: 100, height: 150, left: 400, top: 350,
-  fill: 'red',
-selectable: false
-});
+// Positions map => {[key, Object, ocuppied?(true/false)], ...}
+var positions = {};
+// Coods ==> [[left, top], ...]
+var coords = [[37,243],[280,243]];
+
+for (i = 0, len = 2; i < len; i++) {
+  var l = coords[i][0];
+  var t = coords[i][1];
+  fabric.Image.fromURL('assets/gap.png', function(img) {
+      img.set({
+        left: l, top: t, selectable: false,
+      });
+
+      img.perPixelTargetFind = true;
+      img.targetFindTolerance = 4;
+      img.hasControls = img.hasBorders = false;
+
+      //add gap area to the canvas
+      canvas.add(img);
+      //save gap object in the positions map
+      positions[i] = [img, false];
+    });
+}
 
 /*
+var rect2 = new fabric.Rect({
+  width: 100, height: 150, left: 400, top: 350,
+  fill: 'grey',
+selectable: false
+});
+
 var rect3 = new fabric.Rect({
   width: 100, height: 100, left: 100, top: 100,
   fill: 'blue'
@@ -25,13 +54,15 @@ var rect4 = new fabric.Rect({
   fill: 'green'
 });
 */
-for (var i = 0, len = 2; i < len; i++) {
-  fabric.Image.fromURL('./assets/jake.png', function(img) {
+
+// load assets
+var assets = ['assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png'];
+
+for (var i = 0, len = 3; i < len; i++) {
+  fabric.Image.fromURL(assets[i], function(img) {
     img.set({
       left: fabric.util.getRandomInt(0, 300),
       top: fabric.util.getRandomInt(0, 300),
-      width: 100,
-      height: 150,
     });
 
     img.perPixelTargetFind = true;
@@ -42,13 +73,9 @@ for (var i = 0, len = 2; i < len; i++) {
   });
 }
 
-// var positions = [rect1, rect2]; 
-// Positions MAP => key = [Object, ocuppied?(true/false)]
-var positions = {};
-positions[1] = [rect1, false];
-positions[2] = [rect2, false];
 
-canvas.add(rect1, rect2);
+
+//canvas.add(rect1, rect2);
 canvas.on({
   'object:moving': onChange,
   'object:modified': goToPosition,
