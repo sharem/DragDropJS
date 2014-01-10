@@ -1,7 +1,7 @@
 // Positions map => {[key, Object, ocuppied?(true/false)], ...}
 var positions = {};
 // Coods ==> [[left, top], ...]
-var coords = [[37,243],[280,243]];
+var coords = [[37,243],[280,243],[576,242]];
 // Assets
 var assets = ['assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png'];
 
@@ -14,6 +14,26 @@ fabric.Object.prototype.transparentCorners = false;
 function loadImages() {
   fabric.Image.fromURL('assets/gap.png', createGaps);
   createDraggableImages();
+}
+
+function createGaps(img)  {
+  for (var i = 0, len = 3; i < len; i++) {
+      //get gap coords from the coods array
+      var l = coords[i][0];
+      var t = coords[i][1];
+
+      var img = new fabric.Image(img.getElement(), {
+        left: l, top: t, selectable: false, type: "gap", id: i});
+
+      img.perPixelTargetFind = true;
+      img.targetFindTolerance = 4;
+      img.hasControls = img.hasBorders = false;
+      img.setOpacity(0.2);
+      //add gap area to the canvas
+      canvas.add(img);
+      //save gap object in the positions map
+      positions[i] = [img, false];
+  }
 }
 
 function createDraggableImages() {
@@ -59,25 +79,6 @@ var rect4 = new fabric.Rect({
   fill: 'green'
 });
 */
-function createGaps(img)  {
-  for (var i = 0, len = 2; i < len; i++) {
-      //get gap coords from the coods array
-      var l = coords[i][0];
-      var t = coords[i][1];
-
-      var img = new fabric.Image(img.getElement(), {
-        left: l, top: t, selectable: false, });
-
-      img.perPixelTargetFind = true;
-      img.targetFindTolerance = 4;
-      img.hasControls = img.hasBorders = false;
-
-      //add gap area to the canvas
-      canvas.add(img);
-      //save gap object in the positions map
-      positions[i] = [img, false];
-  }
-}
 
 // Events
 canvas.on({
@@ -89,7 +90,9 @@ function onChange(options) {
   options.target.setCoords();
   canvas.forEachObject(function(obj) {
     if (obj === options.target) return;
-    obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 1);
+    // if not a gap don't change it's opacity
+    if (obj.type != "gap") return;
+    obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 0);
   });
 }
 
