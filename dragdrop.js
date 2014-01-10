@@ -1,9 +1,15 @@
+// Positions map => {[key, Object, ocuppied?(true/false)], ...}
+var positions = {};
+// Coods ==> [[left, top], ...]
+var coords = [[37,243],[280,243]];
 
 var canvas = new fabric.Canvas('c');
-canvas.setBackgroundImage('assets/tree.png');
 canvas.setWidth(857);
 canvas.setHeight(462);
+canvas.setBackgroundImage('assets/tree.png');
 fabric.Object.prototype.transparentCorners = false;
+
+fabric.Image.fromURL('assets/gap.png', createGaps);
 
 /*
 var rect1 = new fabric.Rect({
@@ -12,30 +18,6 @@ var rect1 = new fabric.Rect({
 selectable: false
 });
 */
-
-// Positions map => {[key, Object, ocuppied?(true/false)], ...}
-var positions = {};
-// Coods ==> [[left, top], ...]
-var coords = [[37,243],[280,243]];
-
-for (i = 0, len = 2; i < len; i++) {
-  var l = coords[i][0];
-  var t = coords[i][1];
-  fabric.Image.fromURL('assets/gap.png', function(img) {
-      img.set({
-        left: l, top: t, selectable: false,
-      });
-
-      img.perPixelTargetFind = true;
-      img.targetFindTolerance = 4;
-      img.hasControls = img.hasBorders = false;
-
-      //add gap area to the canvas
-      canvas.add(img);
-      //save gap object in the positions map
-      positions[i] = [img, false];
-    });
-}
 
 /*
 var rect2 = new fabric.Rect({
@@ -54,6 +36,26 @@ var rect4 = new fabric.Rect({
   fill: 'green'
 });
 */
+function createGaps(img)  {
+for (var i = 0, len = 2; i < len; i++) {
+    var l = coords[i][0];
+    var t = coords[i][1];
+
+    var img = new fabric.Image(img.getElement(), {
+       left: l, top: t, selectable: false, });
+
+        img.perPixelTargetFind = true;
+        img.targetFindTolerance = 4;
+        img.hasControls = img.hasBorders = false;
+
+        //add gap area to the canvas
+        canvas.add(img);
+        //save gap object in the positions map
+        positions[i] = [img, false];
+      
+  }
+  var x = canvas.getObjects();
+}
 
 // load assets
 var assets = ['assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png'];
