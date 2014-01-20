@@ -1,9 +1,9 @@
-// Positions map => {[key, Object, ocuppied?(true/false)], ...}
-var positions = {};
+// Positions ==> [[key(Object), anwser, ocuppied?(true/false)], ...]
+var positions = [];
 // Coods ==> [[left, top], ...]
-var coords = [[37,243],[280,243],[576,242]];
+var coords = [[37,243],[280,243],[576,242],[111,392]];
 // Assets
-var assets = ['assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png'];
+var assets = [ 'assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png', 'assets/ares.png'];
 
 var canvas = new fabric.Canvas('c');
 canvas.setWidth(857);
@@ -16,14 +16,15 @@ function loadImages() {
   createDraggableImages();
 }
 
+
 function createGaps(img)  {
-  for (var i = 0, len = 3; i < len; i++) {
+  for (var i = 0, len = 4; i < len; i++) {
       //get gap coords from the coods array
       var l = coords[i][0];
       var t = coords[i][1];
 
       var img = new fabric.Image(img.getElement(), {
-        left: l, top: t, selectable: false, type: "gap", id: i});
+        left: l, top: t, selectable: false, type: "gap"});
 
       img.perPixelTargetFind = true;
       img.targetFindTolerance = 4;
@@ -32,13 +33,13 @@ function createGaps(img)  {
       //add gap area to the canvas
       canvas.add(img);
       //save gap object in the positions map
-      positions[i] = [img, false];
+      positions[i] = [img, i, null];
   }
 }
 
 function createDraggableImages() {
 // create draggable assets
-  for (var i = 0, len = 3; i < len; i++) {
+  for (var i = 0, len = 4; i < len; i++) {
     fabric.Image.fromURL(assets[i], function(img) {
       img.set({
         left: fabric.util.getRandomInt(0, 300),
@@ -49,11 +50,10 @@ function createDraggableImages() {
       img.targetFindTolerance = 4;
       img.hasControls = img.hasBorders = false;
 
-      canvas.add(img);
-    });
+      canvas.add(img); 
+    }, {id: i});
   }
 }
-
 /*
 var rect1 = new fabric.Rect({
   width: 118, height: 60, left: 38, top: 244,
@@ -100,17 +100,17 @@ function goToPosition(options) {
   for (var pos in positions){
     // get the position object
     var position = positions[pos][0];
-    var ocuppied = positions[pos][1];
+    var ocuppied = positions[pos][2];
     // if the object was previously occupying a position, free 
     // that position
-    if (ocuppied) positions[pos][1] = false;
+    if (options.target === ocuppied) positions[pos][2] = null;
     // check if the object intersects a position
     if (options.target.intersectsWithObject(position)) {
       // check if the position is already filled with another object
       if (!(ocuppied)) {
           // if it's not filled with another object,
           // automaticaly fill the position with the objects
-          positions[pos][1] = true;
+          positions[pos][2] = options.target;
           // set opacity to 1
           positions[pos][0].setOpacity(1);
           options.target.setLeft(position.getLeft());
@@ -119,5 +119,23 @@ function goToPosition(options) {
         alert("There's another object in this position! :/");
       }
     }
- }
+  }
+}
+
+function checkAnswers() {
+
+      for (var pos in positions) {
+        var position = positions[pos][0];
+        var anwser = positions[pos][1];
+        var ocuppied = positions[pos][2];
+        if (ocuppied === null) {
+          alert("Empty");
+          return;
+        }
+        if (ocuppied.id != anwser) {
+          alert("Wrong!");
+          return;
+        }
+      }
+
 }
