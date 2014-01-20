@@ -134,6 +134,14 @@ function checkAnswers() {
         }
         if (ocuppied.id != anwser) {
           alert("Wrong!");
+          canvas.forEachObject(function(obj) {
+            if (obj.type != "gap") {
+              if (obj === ocuppied) {
+                obj.set("hasBorders", true);
+canvas.renderAll();
+              }
+            }
+          });
           return;
         }
       }
