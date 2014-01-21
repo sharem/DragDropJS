@@ -16,7 +16,6 @@ function loadImages() {
   createDraggableImages();
 }
 
-
 function createGaps(img)  {
   for (var i = 0, len = 4; i < len; i++) {
       //get gap coords from the coods array
@@ -37,6 +36,30 @@ function createGaps(img)  {
   }
 }
 
+function createCrosses(obj) {
+  fabric.Image.fromURL('assets/cross.png', function(img) {
+    img.set({
+      left: obj.left,
+      top: obj.top,
+      type: "check",
+    });
+    img.hasControls = img.hasBorders = img.selectable = false;
+    canvas.add(img);
+  });
+}
+
+function createTicks(obj)  {
+  fabric.Image.fromURL('assets/tick.png', function(img) {
+    img.set({
+      left: obj.left,
+      top: obj.top,
+      type: "check",
+    });
+    img.hasControls = img.hasBorders = img.selectable = false;
+    canvas.add(img);
+  });
+}
+
 function createDraggableImages() {
 // create draggable assets
   for (var i = 0, len = 4; i < len; i++) {
@@ -44,6 +67,7 @@ function createDraggableImages() {
       img.set({
         left: fabric.util.getRandomInt(0, 300),
         top: fabric.util.getRandomInt(0, 300),
+        type: "draggable",
       });
 
       img.perPixelTargetFind = true;
@@ -89,6 +113,9 @@ canvas.on({
 function onChange(options) {
   options.target.setCoords();
   canvas.forEachObject(function(obj) {
+    if (obj.type === "check") {
+      canvas.remove(obj);
+    }
     if (obj === options.target) return;
     // if not a gap don't change it's opacity
     if (obj.type != "gap") return;
@@ -123,27 +150,49 @@ function goToPosition(options) {
 }
 
 function checkAnswers() {
-
-      for (var pos in positions) {
-        var position = positions[pos][0];
-        var anwser = positions[pos][1];
-        var ocuppied = positions[pos][2];
-        if (ocuppied === null) {
-          alert("Empty");
-          return;
+  for (var pos in positions) {
+    var position = positions[pos][0];
+    var anwser = positions[pos][1];
+    var ocuppied = positions[pos][2];
+    if (ocuppied === null) {
+      alert("¡Hay huecos que están vacios!");
+      return;
+    }
+    if (ocuppied.id != anwser) {
+      canvas.forEachObject(function(obj) {
+        if (obj.type != "gap") {
+          if (obj === ocuppied) {
+            createCrosses(obj);
+          }
         }
-        if (ocuppied.id != anwser) {
-          alert("Wrong!");
-          canvas.forEachObject(function(obj) {
-            if (obj.type != "gap") {
-              if (obj === ocuppied) {
-                obj.set("hasBorders", true);
-canvas.renderAll();
-              }
-            }
-          });
-          return;
+      });
+    } else {
+      canvas.forEachObject(function(obj) {
+        if (obj.type != "gap") {
+          if (obj === ocuppied) {
+            createTicks(obj);
+          }
         }
-      }
+      });
+    }
+  }
+}
 
+function resetActivity() {
+  // empty positions' array "occupied"
+  for (var pos in positions) {
+    positions[pos][2] = null;
+  }
+  // remove check images and relocate draggable images
+  canvas.forEachObject(function(obj) {
+    if (obj.type === "check") {
+      canvas.remove(obj);
+    }
+    if (obj.type === "draggable") {
+      obj.setTop(fabric.util.getRandomInt(0, 300));
+      obj.setLeft(fabric.util.getRandomInt(0, 300));
+      obj.setCoords();
+    }
+  });
+   canvas.renderAll();
 }
