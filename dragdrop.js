@@ -66,7 +66,7 @@ function createDraggableImages() {
   for (var i = 0, len = 5; i < len; i++) {
     fabric.Image.fromURL(assets[i], function(img) {
       img.set({
-        left: fabric.util.getRandomInt(850, 1000),
+        left: fabric.util.getRandomInt(900, 1000),
         top: fabric.util.getRandomInt(0, 500),
         type: "draggable",
       });
@@ -76,7 +76,7 @@ function createDraggableImages() {
       img.hasControls = img.hasBorders = false;
 
       canvas.add(img); 
-    }, {id: i, hoverCursor: names[i]});
+    }, {id: i});
   }
 }
 
@@ -115,11 +115,11 @@ function goToPosition(options) {
           // automaticaly fill the position with the objects
           positions[pos][2] = options.target;
           // set opacity to 1
-          positions[pos][0].setOpacity(1);
+          positions[pos][0].setOpacity(0.2);
           options.target.setLeft(position.getLeft());
           options.target.setTop(position.getTop());
       } else {
-        alert("There's another object in this position! :/");
+        alert("Ya existe otra imágen en este sitio.");
       }
     }
   }
@@ -166,7 +166,7 @@ function resetActivity() {
     }
     if (obj.type === "draggable") {
       obj.setTop(fabric.util.getRandomInt(0, 500));
-      obj.setLeft(fabric.util.getRandomInt(850, 1000));
+      obj.setLeft(fabric.util.getRandomInt(900, 1000));
       obj.setCoords();
     }
   });
