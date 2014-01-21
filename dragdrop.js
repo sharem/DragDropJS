@@ -95,7 +95,7 @@ function onChange(options) {
     if (obj === options.target) return;
     // if not a gap don't change it's opacity
     if (obj.type != "gap") return;
-    obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 0);
+    obj.setOpacity(options.target.intersectsWithObject(obj) ? 0.5 : 0.2);
   });
 }
 
