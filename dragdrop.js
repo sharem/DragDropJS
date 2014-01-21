@@ -2,6 +2,7 @@
 var positions = [];
 // Coods ==> [[left, top], ...]
 var coords = [[304,230],[478,230],[598,230],[452,462],[770,462]];
+var names = ["Hera", "Zeus", "Poseidon", "Atenea", "Afrodita"];
 // Assets
 var assets = ['assets/hera.png', 'assets/zeus.png', 'assets/poseidon.png', 'assets/atenea.png', 'assets/afrodita.png'];
 
@@ -75,34 +76,9 @@ function createDraggableImages() {
       img.hasControls = img.hasBorders = false;
 
       canvas.add(img); 
-    }, {id: i});
+    }, {id: i, hoverCursor: names[i]});
   }
 }
-/*
-var rect1 = new fabric.Rect({
-  width: 118, height: 60, left: 38, top: 244,
-  fill: 'grey',
-selectable: false
-});
-*/
-
-/*
-var rect2 = new fabric.Rect({
-  width: 100, height: 150, left: 400, top: 350,
-  fill: 'grey',
-selectable: false
-});
-
-var rect3 = new fabric.Rect({
-  width: 100, height: 100, left: 100, top: 100,
-  fill: 'blue'
-});
-
-var rect4 = new fabric.Rect({
-  width: 100, height: 100, left: 175, top: 250,
-  fill: 'green'
-});
-*/
 
 // Events
 canvas.on({
