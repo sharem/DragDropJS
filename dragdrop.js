@@ -1,13 +1,13 @@
 // Positions ==> [[key(Object), anwser, ocuppied?(true/false)], ...]
 var positions = [];
 // Coods ==> [[left, top], ...]
-var coords = [[37,243],[280,243],[576,242],[111,392]];
+var coords = [[304,230],[478,230],[598,230],[452,462],[770,462]];
 // Assets
-var assets = [ 'assets/hestia.png', 'assets/hera.png', 'assets/poseidon.png', 'assets/ares.png'];
+var assets = ['assets/hera.png', 'assets/zeus.png', 'assets/poseidon.png', 'assets/atenea.png', 'assets/afrodita.png'];
 
 var canvas = new fabric.Canvas('c');
-canvas.setWidth(857);
-canvas.setHeight(462);
+canvas.setWidth(1100);
+canvas.setHeight(600);
 canvas.setBackgroundImage('assets/tree.png', loadImages);
 fabric.Object.prototype.transparentCorners = false;
 
@@ -17,7 +17,7 @@ function loadImages() {
 }
 
 function createGaps(img)  {
-  for (var i = 0, len = 4; i < len; i++) {
+  for (var i = 0, len = 5; i < len; i++) {
       //get gap coords from the coods array
       var l = coords[i][0];
       var t = coords[i][1];
@@ -62,11 +62,11 @@ function createTicks(obj)  {
 
 function createDraggableImages() {
 // create draggable assets
-  for (var i = 0, len = 4; i < len; i++) {
+  for (var i = 0, len = 5; i < len; i++) {
     fabric.Image.fromURL(assets[i], function(img) {
       img.set({
-        left: fabric.util.getRandomInt(0, 300),
-        top: fabric.util.getRandomInt(0, 300),
+        left: fabric.util.getRandomInt(850, 1000),
+        top: fabric.util.getRandomInt(0, 500),
         type: "draggable",
       });
 
@@ -189,8 +189,8 @@ function resetActivity() {
       canvas.remove(obj);
     }
     if (obj.type === "draggable") {
-      obj.setTop(fabric.util.getRandomInt(0, 300));
-      obj.setLeft(fabric.util.getRandomInt(0, 300));
+      obj.setTop(fabric.util.getRandomInt(0, 500));
+      obj.setLeft(fabric.util.getRandomInt(850, 1000));
       obj.setCoords();
     }
   });
